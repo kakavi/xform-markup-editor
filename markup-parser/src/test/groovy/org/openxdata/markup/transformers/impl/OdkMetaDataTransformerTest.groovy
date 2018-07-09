@@ -62,6 +62,18 @@ group {
     Instance ID
 
 
+    @absoluteid __reviewed
+    @invisible
+    @boolean
+    Reviewed
+
+
+    @absoluteid __reviewedBy
+    @invisible
+    @text
+    Reviewed By
+    
+    
 }'''
 
         assertEquals TestUtils.trimAllLines(expected), TestUtils.trimAllLines(outMarkup)

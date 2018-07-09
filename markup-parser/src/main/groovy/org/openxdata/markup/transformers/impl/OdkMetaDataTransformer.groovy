@@ -12,8 +12,8 @@ import org.openxdata.markup.util.Assert
  * This is class is reponsible for adding odk metadata to the form
  * to see the metadata, add @odkmetadata about the form name.
  * eg. ### Test Study
- *      @odkmetadata
- *      # # Test Form
+ * @odkmetadata
+ * # # Test Form
  */
 @CompileStatic
 class OdkMetaDataTransformer implements Transformer {
@@ -30,50 +30,57 @@ class OdkMetaDataTransformer implements Transformer {
 
         def startQn =
                 FormBuilder.create()
-                           .binding("__start")
-                           .text("Start Time")
-                           .visible(false)
-                           .type(XformType.DATE_TIME)
-                           .bindAttr("jr:preload", "timestamp")
-                           .bindAttr("jr:preloadParams", "start")
-                           .meta(transformAttribute)
-                           .asQuestion()
+                        .binding("__start")
+                        .text("Start Time")
+                        .visible(false)
+                        .type(XformType.DATE_TIME)
+                        .bindAttr("jr:preload", "timestamp")
+                        .bindAttr("jr:preloadParams", "start")
+                        .meta(transformAttribute)
+                        .asQuestion()
 
         def endQn =
                 FormBuilder.create()
-                           .binding("__end")
-                           .text("End Time")
-                           .type(XformType.DATE_TIME)
-                           .bindAttr("jr:preload", "timestamp")
-                           .bindAttr("jr:preloadParams", "end")
-                           .meta(transformAttribute)
-                           .asQuestion()
+                        .binding("__end")
+                        .text("End Time")
+                        .type(XformType.DATE_TIME)
+                        .bindAttr("jr:preload", "timestamp")
+                        .bindAttr("jr:preloadParams", "end")
+                        .meta(transformAttribute)
+                        .asQuestion()
 
         def dateQn =
                 FormBuilder.create()
-                           .binding("__today")
-                           .text("Today")
-                           .type(XformType.DATE)
-                           .bindAttr("jr:preload", "date")
-                           .bindAttr("jr:preloadParams", "today")
-                           .meta(transformAttribute)
-                           .asQuestion()
+                        .binding("__today")
+                        .text("Today")
+                        .type(XformType.DATE)
+                        .bindAttr("jr:preload", "date")
+                        .bindAttr("jr:preloadParams", "today")
+                        .meta(transformAttribute)
+                        .asQuestion()
 
         def instanceID =
                 FormBuilder.create()
-                           .text("Instance ID")
-                           .binding("instanceID")
-                           .calculation("concat('uuid:',uuid())")
-                           .asQuestion()
+                        .text("Instance ID")
+                        .binding("instanceID")
+                        .calculation("concat('uuid:',uuid())")
+                        .asQuestion()
 
         def reviewedQn =
                 FormBuilder.create()
-        .binding("__reviewed")
-        .text("Reviewed")
-        .type(XformType.BOOLEAN)
-        .asQuestion()
+                        .binding("__reviewed")
+                        .text("Reviewed")
+                        .type(XformType.BOOLEAN)
+                        .asQuestion()
 
-        [startQn, endQn, dateQn, instanceID,reviewedQn].each { IQuestion q ->
+        def reviewedByQn =
+                FormBuilder.create()
+                        .binding("__reviewedBy")
+                        .text("Reviewed By")
+                        .type(XformType.TEXT)
+                        .asQuestion()
+
+        [startQn, endQn, dateQn, instanceID, reviewedQn,reviewedByQn].each { IQuestion q ->
             q.setHasAbsoluteId(true)
             q.setVisible(false)
             q.setLine(transformAttribute.line)
@@ -88,12 +95,12 @@ class OdkMetaDataTransformer implements Transformer {
         else {
             metaGroup =
                     FormBuilder.create()
-                               .groupQn()
-                               .binding("meta")
-                               .absolute(true)
-                               .meta(transformAttribute)
-                               .addElements(startQn, endQn, dateQn, instanceID,reviewedQn)
-                               .group()
+                            .groupQn()
+                            .binding("meta")
+                            .absolute(true)
+                            .meta(transformAttribute)
+                            .addElements(startQn, endQn, dateQn, instanceID, reviewedQn,reviewedByQn)
+                            .group()
         }
 
 
