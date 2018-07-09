@@ -16,7 +16,7 @@ class Resources {
 
     static def sampleStudy = """//This is a product of http://omnitech.co.ug and http://www.openxdata.org
 ### Sample Markup Study
-
+@odkmetadata
 ## Simple Form
 
 
