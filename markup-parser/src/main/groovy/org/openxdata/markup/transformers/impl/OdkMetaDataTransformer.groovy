@@ -9,6 +9,11 @@ import org.openxdata.markup.util.Assert
 
 /**
  * Created by user on 7/1/2017.
+ * This is class is reponsible for adding odk metadata to the form
+ * to see the metadata, add @odkmetadata about the form name.
+ * eg. ### Test Study
+ *      @odkmetadata
+ *      # # Test Form
  */
 @CompileStatic
 class OdkMetaDataTransformer implements Transformer {
@@ -61,7 +66,14 @@ class OdkMetaDataTransformer implements Transformer {
                            .calculation("concat('uuid:',uuid())")
                            .asQuestion()
 
-        [startQn, endQn, dateQn, instanceID].each { IQuestion q ->
+        def reviewedQn =
+                FormBuilder.create()
+        .binding("__reviewed")
+        .text("Reviewed")
+        .type(XformType.BOOLEAN)
+        .asQuestion()
+
+        [startQn, endQn, dateQn, instanceID,reviewedQn].each { IQuestion q ->
             q.setHasAbsoluteId(true)
             q.setVisible(false)
             q.setLine(transformAttribute.line)
@@ -80,7 +92,7 @@ class OdkMetaDataTransformer implements Transformer {
                                .binding("meta")
                                .absolute(true)
                                .meta(transformAttribute)
-                               .addElements(startQn, endQn, dateQn, instanceID)
+                               .addElements(startQn, endQn, dateQn, instanceID,reviewedQn)
                                .group()
         }
 
