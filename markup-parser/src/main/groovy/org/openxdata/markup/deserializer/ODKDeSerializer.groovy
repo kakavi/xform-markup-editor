@@ -545,14 +545,13 @@ class ODKDeSerializer {
         def instanceId = literalTree.text.replaceAll("'", '')
 
 
-        def childPath = ""
+        def parentId=null
         try {
-            childPath = ParserUtils.find(ast) { CommonTree it -> it.type == XPathParser.ABSPATH }
+            def childPath = ParserUtils.find(ast) { CommonTree it -> it.type == XPathParser.ABSPATH }
+            parentId = XPathUtil.getNodeName(ParserUtils.emitTailString(childPath))
         } catch (Exception ex) {
-            childPath = null
+            parentId = null
         }
-
-        def parentId = XPathUtil.getNodeName(ParserUtils.emitTailString(childPath))
 
         return [instanceId, parentId]
 
